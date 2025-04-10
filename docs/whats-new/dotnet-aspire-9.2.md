@@ -100,6 +100,12 @@ The following hosting integrations don't currently support database creation:
 
 For more information, see [Custom HTTP commands in .NET Aspire](../fundamentals/http-commands.md).
 
+## 📦 Other Integration updates
+
+- All integrations now support multiple configuration providers of the same resource type.
+- Redis, Valkey, and Garnet integrations now have password support by default.
+- Resources including CosmosDB, EventHubs, ServiceBus, and OpenAI now support deeplinking for parent-child relationships.
+
 ## 💔 Breaking changes
 
 With every release, we strive to make .NET Aspire better. However, some changes may break existing functionality. The following breaking changes are introduced in .NET Aspire 9.2:
