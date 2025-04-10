@@ -1,7 +1,7 @@
 ---
 title: What's new in .NET Aspire 9.2
 description: Learn what's new in the official general availability release of .NET Aspire 9.2.
-ms.date: 04/02/2025
+ms.date: 04/10/2025
 ---
 
 # What's new in .NET Aspire 9.2
@@ -19,6 +19,9 @@ It's important to note that .NET Aspire releases out-of-band from .NET releases.
 - [.NET Aspire support policy](https://dotnet.microsoft.com/platform/support/policy/aspire): Important unique product life cycle details.
 
 ## ⬆️ Upgrade to .NET Aspire 9.2
+
+> [!IMPORTANT]
+> If you are using `azd` to deploy Azure PostgreSQL or Azure SQL Server, you now have to configure Azure Managed Identities. For more information, see [breaking changes](#-breaking-changes).
 
 Moving between minor releases of .NET Aspire is simple:
 
@@ -65,19 +68,19 @@ If your app host project file doesn't have the `Aspire.AppHost.Sdk` reference, y
 
 The .NET Aspire app host project file no longer requires the `IsAspireHost` property. This property was moved to the `Aspire.AppHost.Sdk` SDK, therefore, you can remove it from your project file. For more information, see [dotnet/aspire issue #8144](https://github.com/dotnet/aspire/pull/8144).
 
-<!--
-## 📈 Dashboard usage telemetry
+## 🖇️ Dashboard resource graph & icons
 
-.NET Aspire collects usage telemetry from the dashboard by default. This telemetry helps us understand how you use the dashboard and what features are most important to you. We use this information to prioritize our work and improve the dashboard experience. You can opt out of this telemetry by setting the `DOTNET_DASHBOARD_ENABLE_TELEMETRY` environment variable to `false`. For more information, see [.NET Aspire dashboard usage telemetry](../fundamentals/dashboard/usage-telemetry.md).
--->
-
-## 🚫 Disable dashboard resource graphs
-
-The dashboard has the ability to display resource graphs, which show the relationships between resources in your app. This feature is enabled by default, but you can disable it by setting the `Dashboard:UI:DisableResourceGraph` configuration option to `true`.
+The dashboard now has the ability to display a resource graph, which shows the relationships between resources in your app in an interactive view. To see the resource graph, select the "Graph" tab above the Resources table. The graph icons also match new icons in the Resources table.
 
 For more information, see [.NET Aspire dashboard configuration](../fundamentals/dashboard/configuration.md#other).
 
-## ➕ Database resources created if missing
+## 🌐 HTTP-based resource command functionality
+
+[Custom resource commands](../fundamentals/custom-resource-commands.md) now support HTTP-based functionality with the addition of the `WithHttpCommand` API, enabling you to define endpoints for tasks like database migrations or resets. These commands can be run directly from the .NET Aspire dashboard.
+
+For more information, see [Custom HTTP commands in .NET Aspire](../fundamentals/http-commands.md).
+
+## ➕ Database resources auto-created if missing
 
 There's [plenty of feedback and confusion](https://github.com/dotnet/aspire/issues/7101) around the `AddDatabase` API. The name implies that it adds a database, but it didn't actually create the database. In .NET Aspire 9.2, the `AddDatabase` API now creates a database for the following hosting integrations:
 
@@ -88,18 +91,18 @@ There's [plenty of feedback and confusion](https://github.com/dotnet/aspire/issu
 
 The Azure SQL and Azure PostgreSQL hosting integrations both expose an `AddDatabase` API, but they don't create a database—unless you call their respective `RunAsContainer` methods. For more information, see [Understand Azure integration APIs](../azure/integrations-overview.md#understand-azure-integration-apis).
 
-The following hosting integrations don't support database creation:
+The following hosting integrations don't currently support database creation:
 
 - [📦 Aspire.Hosting.Milvus](https://www.nuget.org/packages/Aspire.Hosting.Milvus)
 - [📦 Aspire.Hosting.MongoDb](https://www.nuget.org/packages/Aspire.Hosting.MongoDb)
 - [📦 Aspire.Hosting.MySql](https://www.nuget.org/packages/Aspire.Hosting.MySql)
 - [📦 Aspire.Hosting.Oracle](https://www.nuget.org/packages/Aspire.Hosting.Oracle)
 
-## 🌐 HTTP-based resource command functionality
+## 📦 Other Integration updates
 
-[Custom resource commands](../fundamentals/custom-resource-commands.md) now support HTTP-based functionality with the addition of the `WithHttpCommand` API, enabling you to define endpoints for tasks like database migrations or resets. These commands can be run directly from the .NET Aspire dashboard.
-
-For more information, see [Custom HTTP commands in .NET Aspire](../fundamentals/http-commands.md).
+- All integrations now support multiple configuration providers of the same resource type.
+- Redis, Valkey, and Garnet integrations now have password support by default.
+- Resources including CosmosDB, EventHubs, ServiceBus, and OpenAI now support deeplinking for parent-child relationships.
 
 ## 💔 Breaking changes
 
