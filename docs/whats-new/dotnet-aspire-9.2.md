@@ -68,15 +68,19 @@ If your app host project file doesn't have the `Aspire.AppHost.Sdk` reference, y
 
 The .NET Aspire app host project file no longer requires the `IsAspireHost` property. This property was moved to the `Aspire.AppHost.Sdk` SDK, therefore, you can remove it from your project file. For more information, see [dotnet/aspire issue #8144](https://github.com/dotnet/aspire/pull/8144).
 
-## 
-
 ## 🖇️ Dashboard resource graph & icons
 
 The dashboard now has the ability to display a resource graph, which shows the relationships between resources in your app in an interactive view. To see the resource graph, select the "Graph" tab above the Resources table. The graph icons also match new icons in the Resources table.
 
 For more information, see [.NET Aspire dashboard configuration](../fundamentals/dashboard/configuration.md#other).
 
-## ➕ Database resources created if missing
+## 🌐 HTTP-based resource command functionality
+
+[Custom resource commands](../fundamentals/custom-resource-commands.md) now support HTTP-based functionality with the addition of the `WithHttpCommand` API, enabling you to define endpoints for tasks like database migrations or resets. These commands can be run directly from the .NET Aspire dashboard.
+
+For more information, see [Custom HTTP commands in .NET Aspire](../fundamentals/http-commands.md).
+
+## ➕ Database resources auto-created if missing
 
 There's [plenty of feedback and confusion](https://github.com/dotnet/aspire/issues/7101) around the `AddDatabase` API. The name implies that it adds a database, but it didn't actually create the database. In .NET Aspire 9.2, the `AddDatabase` API now creates a database for the following hosting integrations:
 
@@ -93,12 +97,6 @@ The following hosting integrations don't currently support database creation:
 - [📦 Aspire.Hosting.MongoDb](https://www.nuget.org/packages/Aspire.Hosting.MongoDb)
 - [📦 Aspire.Hosting.MySql](https://www.nuget.org/packages/Aspire.Hosting.MySql)
 - [📦 Aspire.Hosting.Oracle](https://www.nuget.org/packages/Aspire.Hosting.Oracle)
-
-## 🌐 HTTP-based resource command functionality
-
-[Custom resource commands](../fundamentals/custom-resource-commands.md) now support HTTP-based functionality with the addition of the `WithHttpCommand` API, enabling you to define endpoints for tasks like database migrations or resets. These commands can be run directly from the .NET Aspire dashboard.
-
-For more information, see [Custom HTTP commands in .NET Aspire](../fundamentals/http-commands.md).
 
 ## 📦 Other Integration updates
 
