@@ -342,6 +342,8 @@ items:
       href: community-toolkit/hosting-python-extensions.md
     - name: Ollama
       href: community-toolkit/ollama.md
+    - name: MailPit
+      href: community-toolkit/hosting-mailpit.md
     - name: Meilisearch
       href: community-toolkit/hosting-meilisearch.md
     - name: Rust apps
