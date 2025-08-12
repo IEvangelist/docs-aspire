@@ -1,44 +1,38 @@
 ---
-title: OpenAI hosting integration
-description: Learn how to use the .NET Aspire OpenAI hosting integration to configure OpenAI resources and models in your distributed applications.
-ms.date: 8/11/2025
-ms.topic: how-to
+title: OpenAI integration
+description: Learn how to use the .NET Aspire OpenAI integration to configure OpenAI resources and models in your distributed applications.
+ms.date: 08/12/2025
+ai-usage: ai-assisted
 ---
 
-# .NET Aspire OpenAI hosting integration
+# .NET Aspire OpenAI integration
 
 [!INCLUDE [includes-hosting-and-client](../includes/includes-hosting-and-client.md)]
 
-[!INCLUDE [banner](../includes/banner.md)]
-
-The .NET Aspire OpenAI hosting integration enables you to connect to the [OpenAI API](https://platform.openai.com/docs/introduction) or OpenAI-compatible services. It handles the configuration of connection strings, health checks, and telemetry for your OpenAI resources.
+The .NET Aspire OpenAI integration enables you to connect to the OpenAI API (<https://platform.openai.com/docs/introduction>) or OpenAI-compatible services. It handles the configuration of connection strings, health checks, and telemetry for your OpenAI resources.
 
 ## Hosting integration
 
 The OpenAI hosting integration models OpenAI services and models as resources in your distributed application. It supports both OpenAI.com and OpenAI-compatible endpoints.
 
-### Complete example
-
-The following example demonstrates adding OpenAI resources with multiple models to an AppHost:
-
-:::code language="csharp" source="snippets/openai-integration/Program.cs":::
-
-And the corresponding service configuration:
-
-:::code language="csharp" source="snippets/openai-integration/ServiceProgram.cs":::
-
 ### Add OpenAI resource
 
-To add an OpenAI resource to your AppHost, install the [Aspire.Hosting.OpenAI](https://www.nuget.org/packages/Aspire.Hosting.OpenAI) NuGet package in the AppHost project.
+To add an OpenAI resource to your AppHost, install the [📦 Aspire.Hosting.OpenAI](https://www.nuget.org/packages/Aspire.Hosting.OpenAI) NuGet package in the AppHost project.
 
-<a name="package"></a>
+### [.NET CLI](#tab/dotnet-cli)
 
-[!INCLUDE [package-reference](../includes/package-reference.md)]
+```dotnetcli
+dotnet add package Aspire.Hosting.OpenAI
+```
+
+### [PackageReference](#tab/package-reference)
 
 ```xml
 <PackageReference Include="Aspire.Hosting.OpenAI"
                   Version="*" />
 ```
+
+---
 
 For more information, see [dotnet add package](/dotnet/core/tools/dotnet-add-package) or [Manage package dependencies in .NET applications](/dotnet/core/tools/dependencies).
 
@@ -88,18 +82,7 @@ The `AddModel` method takes two parameters:
 
 ### Available models
 
-OpenAI supports various AI models. Some popular options include:
-
-- `gpt-4o-mini` - Fast and efficient model for most tasks
-- `gpt-4o` - Most capable multimodal model
-- `gpt-4-turbo` - Previous generation high-performance model
-- `gpt-3.5-turbo` - Fast and inexpensive model for simple tasks
-- `text-embedding-3-small` - Small embedding model for text similarity
-- `text-embedding-3-large` - Large embedding model for text similarity
-- `dall-e-3` - Text-to-image generation model
-- `whisper-1` - Speech-to-text model
-
-For the most up-to-date list of available models, see the [OpenAI Models documentation](https://platform.openai.com/docs/models).
+OpenAI supports various AI models. For the most up-to-date list of available models, see <https://platform.openai.com/docs/models>.
 
 ### Custom endpoints
 
@@ -111,7 +94,7 @@ Both the parent and model connection strings will include the custom endpoint.
 
 ### Add health checks
 
-By default, .NET Aspire adds a basic health check for the OpenAI service that monitors the status page. To add a health check that verifies your specific model and API key, call the <xref:Aspire.Hosting.OpenAIExtensions.WithHealthCheck*> method:
+By default, Aspire adds a basic health check for the OpenAI service that monitors the status page. To add a health check that verifies your specific model and API key, call the <xref:Aspire.Hosting.OpenAIExtensions.WithHealthCheck*> method:
 
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
@@ -126,27 +109,35 @@ var myService = builder.AddProject<Projects.MyService>()
 
 The health check verifies that:
 
-- The OpenAI endpoint is accessible
-- The API key is valid
-- The specified model is available
+- The OpenAI endpoint is accessible.
+- The API key is valid.
+- The specified model is available.
 
 > [!NOTE]
 > OpenAI API calls, including health checks, count toward your rate limits. Use model-specific health checks sparingly, such as when troubleshooting connectivity issues.
 
 ## Client integration
 
-To get started with the .NET Aspire OpenAI client integration, install the [Aspire.OpenAI](https://www.nuget.org/packages/Aspire.OpenAI) NuGet package in the client-consuming project, that is, the project for the application that uses the OpenAI client.
+To get started with the Aspire OpenAI client integration, install the [Aspire.OpenAI](https://www.nuget.org/packages/Aspire.OpenAI) NuGet package in the client-consuming project, that is, the project for the application that uses the OpenAI client.
 
-[!INCLUDE [package-reference](../includes/package-reference.md)]
+### [.NET CLI](#tab/dotnet-cli)
+
+```dotnetcli
+dotnet add package Aspire.OpenAI
+```
+
+### [PackageReference](#tab/package-reference)
 
 ```xml
 <PackageReference Include="Aspire.OpenAI"
                   Version="*" />
 ```
 
+---
+
 ### Add OpenAI client
 
-In the _Program.cs_ file of your client-consuming project, call the <xref:Microsoft.Extensions.Hosting.AspireOpenAIExtensions.AddOpenAIClient*> extension method on any <xref:Microsoft.Extensions.Hosting.IHostApplicationBuilder> to register an `OpenAIClient` for use via the dependency injection container. The method takes a connection name parameter.
+In the `Program.cs` file of your client-consuming project, call the <xref:Microsoft.Extensions.Hosting.AspireOpenAIExtensions.AddOpenAIClient*> extension method on any <xref:Microsoft.Extensions.Hosting.IHostApplicationBuilder> to register an `OpenAIClient` for use via the dependency injection container. The method takes a connection name parameter.
 
 ```csharp
 builder.AddOpenAIClient("chat");
@@ -155,11 +146,11 @@ builder.AddOpenAIClient("chat");
 > [!TIP]
 > The `connectionName` parameter must match the name used when adding the OpenAI model resource in the AppHost project. When using the project reference, the connection name should match the model resource name, not the parent OpenAI resource name.
 
-You can then retrieve the `OpenAIClient` instance using dependency injection. For example, to retrieve the client from a web API controller:
+You can then retrieve the `OpenAIClient` instance using dependency injection. For example, to retrieve the client from a minimal API endpoint handler, consider the following extension class:
 
-:::code language="csharp" source="snippets/openai-integration/ChatController.cs":::
+:::code language="csharp" source="snippets/openai-integration/api/Endpoints/ChatEndpoints.cs":::
 
-For more information on using the `OpenAIClient`, see [OpenAI .NET API library](https://github.com/openai/openai-dotnet).
+For more information on using the `OpenAIClient`, see <https://github.com/openai/openai-dotnet>.
 
 ### Add keyed OpenAI client
 
@@ -172,7 +163,7 @@ builder.AddKeyedOpenAIClient("embeddings");
 
 Then you can retrieve the `OpenAIClient` instances using dependency injection. For example, to retrieve the connection from an example service:
 
-:::code language="csharp" source="snippets/openai-integration/KeyedService.cs":::
+:::code language="csharp" source="snippets/openai-integration/api/KeyedService.cs" highlight="12-13":::
 
 For more information on keyed services, see [.NET dependency injection: Keyed services](/dotnet/core/extensions/dependency-injection#keyed-services).
 
@@ -184,8 +175,8 @@ When no model resources are defined in your AppHost, you can create clients dire
 // In AppHost
 var openai = builder.AddOpenAI("openai");
 
-var myService = builder.AddProject<Projects.MyService>()
-                       .WithReference(openai);
+var api = builder.AddProject<Projects.Api>()
+                 .WithReference(openai);
 
 // In the service
 builder.AddOpenAIClient("openai")
@@ -194,7 +185,7 @@ builder.AddOpenAIClient("openai")
 
 ## Configuration
 
-The .NET Aspire OpenAI integration provides multiple configuration approaches and options to meet the requirements and conventions of your project.
+The Aspire OpenAI integration provides multiple configuration approaches and options to meet the requirements and conventions of your project.
 
 ### Use a connection string
 
@@ -218,7 +209,7 @@ The `Endpoint` parameter is optional and defaults to `https://api.openai.com/v1`
 
 ### Use configuration providers
 
-The .NET Aspire OpenAI client integration supports <xref:Microsoft.Extensions.Configuration>. It loads the <xref:Aspire.OpenAI.OpenAISettings> and `OpenAIClientOptions` from configuration by using the `Aspire:OpenAI` key. Example _appsettings.json_ that configures some of the options:
+The Aspire OpenAI client integration supports <xref:Microsoft.Extensions.Configuration>. It loads the <xref:Aspire.OpenAI.OpenAISettings> and `OpenAIClientOptions` from configuration by using the `Aspire:OpenAI` key. Example `appsettings.json` that configures some of the options:
 
 ```json
 {
@@ -289,7 +280,7 @@ This approach is useful when you want to share a single API key across multiple 
 
 ## See also
 
-- [.NET Aspire integrations](../fundamentals/integrations-overview.md)
-- [.NET Aspire GitHub repo](https://github.com/dotnet/aspire)
-- [OpenAI API documentation](https://platform.openai.com/docs/introduction)
-- [OpenAI .NET SDK](https://github.com/openai/openai-dotnet)
+- [.NET Aspire integrations](../fundamentals/integrations-overview.md).
+- .NET Aspire GitHub repo: <https://github.com/dotnet/aspire>.
+- OpenAI API documentation: <https://platform.openai.com/docs/introduction>.
+- OpenAI .NET SDK: <https://github.com/openai/openai-dotnet>.
